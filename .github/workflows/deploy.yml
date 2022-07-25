@@ -120,7 +120,8 @@ jobs:
           ini-values: error_reporting=E_ALL
           tools: composer:v2
           coverage: none
-
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install dependencies
         run: |
           composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
