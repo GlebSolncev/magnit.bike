@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\NovaTranslatable\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \Spatie\NovaTranslatable\Translatable::defaultLocales(['en', 'ru', 'uk']);
+        Translatable::defaultLocales(['ru', 'uk', 'en']);
 
     }
 

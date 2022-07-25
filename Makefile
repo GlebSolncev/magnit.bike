@@ -6,7 +6,7 @@ help:
 	@echo "down	- Stop and remove containers"
 
 cli:
-	@docker  exec -it magnitbike-laravel.test-1 /bin/bash
+	@docker  exec -it app /bin/bash
 
 build:
 	@docker-compose build --no-cache
