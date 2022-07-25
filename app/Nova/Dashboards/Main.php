@@ -7,6 +7,11 @@ use Laravel\Nova\Dashboards\Main as Dashboard;
 
 class Main extends Dashboard
 {
+    public function label()
+    {
+        return 'Главная';
+    }
+
     /**
      * Get the cards for the dashboard.
      *

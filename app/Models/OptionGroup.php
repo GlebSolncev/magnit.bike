@@ -9,32 +9,24 @@ use Spatie\Translatable\HasTranslations;
 /**
  *
  */
-class Category extends Model
+class OptionGroup extends Model
 {
     use HasFactory;
     use HasTranslations;
 
+    protected $table = 'option_groups';
+
+
     /**
      * @var string[]
      */
-    public $translatable = ['title', 'description'];
+    public $translatable = ['title'];
 
     /**
      * @var string[]
      */
     protected $fillable = [
         'slug',
-        'active',
-        'title',
-        'description',
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function parent()
-    {
-        return $this->belongsTo(__CLASS__, 'parent_id', 'id');
-    }
 
 }
