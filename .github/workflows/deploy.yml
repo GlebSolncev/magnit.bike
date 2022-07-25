@@ -53,6 +53,12 @@ jobs:
 #        run:
 
   db:
+    runs-on: ubuntu-latest
+      strategy:
+        fail-fast: true
+        matrix:
+          php: [ 8.1.8 ]
+          laravel: [ 9.0 ]
     name: Create Database
     steps:
       - name: Init
@@ -62,6 +68,12 @@ jobs:
           
 
   test:
+    runs-on: ubuntu-latest
+      strategy:
+        fail-fast: true
+        matrix:
+          php: [ 8.1.8 ]
+          laravel: [ 9.0 ]
     name: Execute tests
     steps:
       - name: Testing
