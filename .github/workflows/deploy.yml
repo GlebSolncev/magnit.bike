@@ -28,13 +28,14 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: post_max_size=256M
           extensions: xml, pcov
-#          dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          #          dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           tools: composer:v2, pecl
           coverage: none
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/contracts=${{ matrix.laravel }}" --no-update
-          composer update --prefer-dist --no-interaction --no-progress
+          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+          composer install --no-dev --no-ansi --no-interaction --no-scripts --no-progress
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
+
