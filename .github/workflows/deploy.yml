@@ -79,5 +79,4 @@ jobs:
     name: Execute tests
     steps:
       - name: Testing
-        run: |
-          vendor/bin/phpunit --verbose
+        run: ./vendor/bin/phpunit --verbose
