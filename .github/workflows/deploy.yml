@@ -17,31 +17,23 @@ jobs:
         laravel: [9.0]
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }}
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-      - name: laravel-phpunit-action
-        uses: nathanheffley/laravel-phpunit-action@master
-
+        uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          ini-values: post_max_size=256M
-          extensions: xml, pcov
-          #          dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-          tools: composer:v2, pecl
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          ini-values: error_reporting=E_ALL
+          tools: composer:v2
           coverage: none
 
       - name: Install dependencies
         run: |
-          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
-          composer install --no-dev --no-ansi --no-interaction --no-scripts --no-progress
-
+          composer require "illuminate/contracts=^${{ matrix.laravel }}" --no-update
+          composer update --prefer-dist --no-interaction --no-progress
       - name: Execute tests
-        env:
-          APP_ENV: testing
-        run: ./vendor/bin/phpunit
+        run: vendor/bin/phpunit --verbose
 
