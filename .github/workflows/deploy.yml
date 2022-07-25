@@ -40,5 +40,5 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
         run: |
-          ./artisan test
+          vendor/bin/phpunit tests/
 
