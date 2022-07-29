@@ -2,15 +2,22 @@
 
 namespace App\Models;
 
+use App\Filters\QueryFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ *
+ */
 class Product extends Model
 {
     use HasFactory;
     use HasTranslations;
-
 
     /**
      *
@@ -39,6 +46,9 @@ class Product extends Model
      */
     public $translatable = ['title', 'description'];
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'active',
         'slug',
@@ -49,13 +59,34 @@ class Product extends Model
         'stock',
     ];
 
-    public function category(){
+    /**
+     * @return BelongsTo
+     */
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function options(){
-        return $this->belongsToMany(Option::class, 'option_product', 'product_id', 'id')
-            ->withPivot(['option_group_id', 'option_id']);
+    /**
+     * @return BelongsToMany
+     */
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'product_option');
     }
 
+    public function scopeFilter(Builder $builder)
+    {
+        return $builder->when(request('filter'), function (Builder $q) {
+            foreach (request('filter') as $group => $items) {
+                $q->with('options')->whereHas('options', function ($query) use ($group, $items) {
+                    $query->whereIn('slug', $items);
+                    $query->with('groups')->whereHas('groups', function ($gQ) use ($group) {
+                        $gQ->where('slug', $group);
+                    });
+                });
+            }
+
+        });
+    }
 }

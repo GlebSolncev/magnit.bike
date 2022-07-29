@@ -4,7 +4,9 @@ namespace App\Nova\Products;
 
 use App\Nova\Resource;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -31,7 +33,7 @@ class Option extends Resource
      *
      * @var string
      */
-    public static $title = 'slug';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
@@ -63,7 +65,7 @@ class Option extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -72,6 +74,9 @@ class Option extends Resource
             ID::make()->sortable(),
             Boolean::make('Включить', 'active'),
             Text::make('slug'),
+
+            BelongsTo::make('Категория параметров', 'groups', GroupOption::class),
+
             Translatable::make([
                 Text::make('Наименование', 'title')
             ])
@@ -82,7 +87,7 @@ class Option extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -93,7 +98,7 @@ class Option extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -104,7 +109,7 @@ class Option extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -115,7 +120,7 @@ class Option extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function actions(NovaRequest $request)

@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Markdown;
@@ -53,20 +54,6 @@ class Product extends Resource
         'id',
     ];
 
-    /**
-     * @var ProductService
-     */
-    protected ProductService $productService;
-
-    /**
-     * @param $resource
-     * @throws BindingResolutionException
-     */
-    public function __construct($resource = null)
-    {
-        parent::__construct($resource);
-        $this->productService = Container::getInstance()->make(ProductService::class);
-    }
 
     /**
      * @return string
@@ -101,17 +88,6 @@ class Product extends Resource
                 Text::make('SKU', 'sku'),
                 BelongsTo::make('Категория', 'category', Category::class),
 
-                BelongsToMany::make('Параметры', 'options', Option::class)
-                    ->fields(function ($request, $relatedModel) {
-                        return [
-                            Select::make('Категория параметров', 'option_group_id')
-                                ->searchable(true)
-                                ->options($this->productService->getOptionGroupsForFieldNova())
-                                ->displayUsing(function($id){
-                                    return Arr::get($this->productService->getOptionGroupsForFieldNova(), $id);
-                                })
-                        ];
-                    }),
             ]),
 
             Panel::make('Информация', [
@@ -122,7 +98,8 @@ class Product extends Resource
                     ->options(self::$model::STATUSES_STOCK)
                     ->displayUsing(function ($key){
                         return Arr::get(self::$model::STATUSES_STOCK, $key);
-                    })
+                    }),
+                BelongsToMany::make('Параметры', 'options', Option::class),
 
             ]),
 

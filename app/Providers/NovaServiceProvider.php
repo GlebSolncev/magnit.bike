@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
+use App\Nova\Category;
 use App\Nova\Dashboards\Main;
+use App\Nova\Products\GroupOption;
 use App\Nova\Products\Option;
-use App\Nova\Products\OptionGroup;
 use App\Nova\Products\Product;
 use App\Nova\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -32,7 +32,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Товары', [
                     MenuItem::resource(Product::class),
-                    MenuItem::resource(OptionGroup::class),
+                    MenuItem::resource(Category::class),
+                    MenuItem::resource(GroupOption::class),
                     MenuItem::resource(Option::class),
                 ])->icon('folder-add')->collapsable(),
 

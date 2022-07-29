@@ -65,7 +65,7 @@ class Category extends Resource
             ID::make()->sortable(),
             Panel::make('Настройки', [
                 Boolean::make('Включить', 'active'),
-                BelongsTo::make('Родительская категория', 'parent', __CLASS__),
+                BelongsTo::make('Родительская категория', 'parent', __CLASS__)->nullable(true),
                 Text::make('slug')
             ]),
 

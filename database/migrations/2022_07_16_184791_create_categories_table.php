@@ -15,16 +15,15 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            
-            $table->string('slug')->index();
-            $table->boolean('active');
-            
-            $table->json('title');
-            $table->json('description');
             $table->unsignedBigInteger('parent_id')->nullable();
 
-            $table->timestamps();
+            $table->boolean('active');
+            $table->string('slug')->index();
 
+            $table->json('title');
+            $table->json('description');
+
+            $table->timestamps();
             $table->foreign('parent_id')->references('id')->on('categories');
         });
     }
